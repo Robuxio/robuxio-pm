@@ -42,7 +42,7 @@
 | **CEO** | Pavel | Business priority, strategic decisions | Strategic items |
 | **COO** | Dries | Client-facing tools, business context | Client/UX correctness |
 | **CTO** | Deneb | Technical architecture, feasibility | All tickets (technical) |
-| **Quant** | Olda | Trading logic, financial correctness | Trading tickets |
+| **Quant** | Olda | Trading logic, financial correctness | Trading tickets *(consulted async, not daily involved)* |
 | **PM-Light** | Azara | Flow, clarity, process enforcement | Nothing (enforces process) |
 | **Developers** | Deneb, Leonardo, Jamolpe, Erro, Azara | Delivery | Nothing (execute) |
 
@@ -151,6 +151,13 @@ For ANY ticket touching trading logic (TWR, NAV, exposure, signals, fees):
 **Both must explicitly approve BEFORE development starts.**
 
 > 🔴 **We learned:** Trading-related tickets shipped with bugs because only one person reviewed.
+
+> ⚠️ **IMPORTANT NOTE (January 2026):** Olda is NOT directly involved in day-to-day operations. For trading logic approvals:
+> - **Primary:** Deneb reviews technical AND trading correctness
+> - **Escalation:** If Deneb is uncertain about trading logic, he consults Olda async
+> - **Critical decisions:** Only escalate to Olda for major trading algorithm changes or financial formula disputes
+> 
+> This means Deneb carries dual responsibility for trading tickets until Olda's involvement changes.
 
 ---
 
@@ -420,17 +427,19 @@ ETA Confidence: [High / Medium / Low]
 
 | Ticket Type | Required Approvers | Must Both Approve? |
 |-------------|-------------------|-------------------|
-| **Core Trading** (engine, signals, risk) | Deneb + Olda | ✅ Yes |
-| **Trading-Related** (TWR, NAV, fees, factsheets) | Deneb + Olda | ✅ Yes |
+| **Core Trading** (engine, signals, risk) | Deneb (+ Olda*) | ✅ Yes |
+| **Trading-Related** (TWR, NAV, fees, factsheets) | Deneb (+ Olda*) | ✅ Yes |
 | **Client/Support/UX** (dashboards, support tools) | Deneb + Dries | ✅ Yes |
 | **Pure Infra** (cloud, deployment) | Deneb only | N/A |
 | **Strategic/High-Risk** | + Pavel | All listed |
+
+> **\*Olda Exception (January 2026):** Olda is not directly involved in day-to-day approvals. Deneb handles trading ticket approvals and consults Olda async only when uncertain about financial/trading logic.
 
 ### Approval Rules
 
 1. **Silence ≠ Approval** – Must see "Approved" in Jira
 2. Approval happens **BEFORE** status changes to "Ready"
-3. For trading tickets, **BOTH Deneb AND Olda must approve**
+3. For trading tickets, **Deneb approves** (consults Olda if needed)
 4. Approvals are visible in ticket history (audit trail)
 
 ---
@@ -502,7 +511,7 @@ A ticket is Done **ONLY IF**:
 | Situation | Escalate To | Timeline |
 |-----------|-------------|----------|
 | Technical decision needed | Deneb | Same day |
-| Trading logic unclear | Olda | Same day |
+| Trading logic unclear | Deneb *(who consults Olda if needed)* | Same day |
 | Client impact unclear | Dries | Same day |
 | Strategic/priority conflict | Pavel | Within 24h |
 | Dev blocked >24h | PM (Azara) → appropriate owner | Immediately |
@@ -743,7 +752,7 @@ When this is done, we can: [specific outcome]
 5. **Scope change = go back** – no silent drift
 6. **Escalate same day** – uncertainty isn't absorbed
 7. **24h = Blocked** – make stuck work visible
-8. **Trading = dual approval** – Deneb + Olda
+8. **Trading = Deneb approves** – consults Olda if needed
 9. **Devs can refuse** – unclear work doesn't start
 10. **CTO ≠ safety net** – team solves, CTO guides
 
@@ -751,8 +760,8 @@ When this is done, we can: [specific outcome]
 
 | Type | Approvers |
 |------|-----------|
-| Core Trading | Deneb + Olda |
-| Trading-Related | Deneb + Olda |
+| Core Trading | Deneb *(consults Olda if needed)* |
+| Trading-Related | Deneb *(consults Olda if needed)* |
 | Client/UX | Deneb + Dries |
 | Infra | Deneb |
 

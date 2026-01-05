@@ -55,7 +55,7 @@ We track major changes in each document's "Document History" section. After sign
 5. **Scope change = go back** – no silent drift
 6. **Escalate same day** – uncertainty isn't absorbed
 7. **24h = Blocked** – make stuck work visible
-8. **Trading = dual approval** – Deneb + Olda
+8. **Trading = Deneb approves** – consults Olda if needed
 9. **Devs can refuse** – unclear work doesn't start
 10. **CTO ≠ safety net** – team solves, CTO guides
 
