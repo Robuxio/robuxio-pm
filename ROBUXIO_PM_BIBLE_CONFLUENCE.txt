@@ -1,0 +1,773 @@
+h1. Robuxio PM Bible
+h2. Pragmatic Execution for a Distributed Team
+h3. Version 2.0 – Post-Hakan Era
+
+----
+
+h2. Why This Version Exists
+
+*What We Learned the Hard Way:*
+
+|| Problem || What Happened || Cost ||
+| *6 weeks → 3 days* | Work started without being startable | Factsheet disaster, trust lost |
+| *Silence = Approval* | People assumed no reply meant yes | Wrong work built |
+| *CTO as Safety Net* | Devs waited for Deneb instead of solving | Single point of failure |
+| *PM as Coordinator* | Hakan tracked status but didn't drive outcomes | Process existed but didn't work |
+| *Part-time Reality Ignored* | Framework assumed full-time commitment | Ceremonies couldn't happen |
+
+{info:title=This Bible merges hard lessons with Azara's pragmatic approach.}{info}
+
+----
+
+h2. Current Team Structure
+
+h3. Interim PM: Javier Azara
+
+|| Attribute || Reality ||
+| *Role* | PM-Light + Active Developer |
+| *Time* | ~16 hours/month PM duties + development work |
+| *Authority* | Can block unclear work, cannot hire/fire |
+| *Limitation* | Cannot attend all meetings, must prioritize |
+
+{warning:title=Conflict of Interest Acknowledgment}
+Azara is both a developer AND the PM. When his own tickets need review, CTO (Deneb) acts as process enforcer.
+{warning}
+
+----
+
+h3. The Robuxio Team
+
+|| Role || Person || Responsibility || Approves ||
+| *CEO* | Pavel | Business priority, strategic decisions | Strategic items |
+| *COO* | Dries | Client-facing tools, business context | Client/UX correctness |
+| *CTO* | Deneb | Technical architecture, feasibility | All tickets (technical) |
+| *Quant* | Olda | Trading logic, financial correctness | Trading tickets |
+| *PM-Light* | Azara | Flow, clarity, process enforcement | Nothing (enforces process) |
+| *Developers* | Deneb, Leonardo, Jamolpe, Erro, Azara | Delivery | Nothing (execute) |
+
+----
+
+h1. Part 1: The 10 Non-Negotiable Rules
+
+{panel:title=These rules exist because we broke them and paid the price.|borderColor=#FF0000}
+
+h3. Rule 1: Jira Is the Only Place Work Exists
+
+* All requests start as Jira tickets
+* No execution based on Discord, email, or meetings alone
+* Meeting outcomes logged in Jira
+* *If it's not in Jira, it does not exist*
+
+{note:title=We learned}Voice notes and scattered documents caused the factsheet disaster.{note}
+
+----
+
+h3. Rule 2: Silence Is NOT Approval
+
+* Approval happens *explicitly* in Jira (comment or status change)
+* No work starts because "I didn't get a reply"
+* If approval is needed and not given → ticket is *Blocked*
+* Approvers must say "Approved" or "Not Approved" — silence blocks
+
+{note:title=We learned}Implicit approvals led to building the wrong things.{note}
+
+----
+
+h3. Rule 3: Work Does Not Start Without the Start Gate
+
+Every ticket needs *ALL* of these before "In Progress":
+
+|| Required || Description ||
+| *Outcome* | "When this is done, we can ___" |
+| *In Scope* | 2-5 bullets of what we WILL do |
+| *Out of Scope* | Explicit exclusions |
+| *Acceptance Criteria* | 3-7 testable conditions |
+| *Owner* | Single person responsible |
+| *Approvers* | Assigned AND have explicitly approved |
+| *Dependencies* | Listed |
+| *Example/Mock* | Screenshot, example data, expected output |
+
+{warning:title=Missing ANY = ticket stays in "Ready for Clarification"}
+The "6 weeks → 3 days" factsheet failure happened because work started without passing this gate.
+{warning}
+
+----
+
+h3. Rule 4: One Developer, One Ticket (WIP = 1)
+
+* Each developer works on *one ticket at a time*
+* No parallel work (context switching kills productivity)
+* Finish before pulling the next
+* Exception: Only if blocked AND blocker takes >24h to resolve
+
+{note:title=We learned}Part-time developers with multiple tickets never finish any of them.{note}
+
+----
+
+h3. Rule 5: Scope Changes Go Back
+
+* Any change to scope mid-work → ticket goes back to "Ready for Clarification"
+* This is not punishment; this is protection
+* If scope is unclear → *stop and clarify before continuing*
+* "Agility" means controlled change, not constant drift
+
+----
+
+h3. Rule 6: Uncertainty Is Escalated Same Day
+
+* If a developer is unsure → escalate *the same workday*
+* Uncertainty is not a personal failure
+* *Silence is the failure*
+* Ambiguity is never "worked around" – it is surfaced
+
+{note:title=We learned}Devs absorbed ambiguity instead of escalating. Problems discovered weeks late.{note}
+
+----
+
+h3. Rule 7: 24 Hours Without Progress = Blocked
+
+* No real progress in 24h → ticket moves to *Blocked*
+* When blocked, must state:
+** What is blocking
+** Who must unblock
+** What decision is needed
+* PM acts immediately (same day)
+
+{note:title=We learned}Blocked work was invisible for days/weeks.{note}
+
+----
+
+h3. Rule 8: Trading Tickets Require Dual Approval
+
+For ANY ticket touching trading logic (TWR, NAV, exposure, signals, fees):
+
+|| Role || Must Approve ||
+| *Deneb (CTO)* | Technical correctness |
+| *Olda (Quant)* | Financial/trading correctness |
+
+*Both must explicitly approve BEFORE development starts.*
+
+{note:title=We learned}Trading-related tickets shipped with bugs because only one person reviewed.{note}
+
+----
+
+h3. Rule 9: Developers Can (and Must) Refuse Unclear Work
+
+* If requirements are garbage, say "I can't start until I have X, Y, Z"
+* Do NOT "start anyway and figure it out"
+* Create a *Spike* (2-6h investigation) if truly unclear
+* The power to refuse is protection, not defiance
+
+{note:title=We learned}Devs started unclear work, then blamed requirements. Both sides lost.{note}
+
+----
+
+h3. Rule 10: The CTO Is Not the Safety Net
+
+* Deneb is for *architecture and technical direction*, not daily problem-solving
+* First ask: "Can I solve this myself?"
+* Second ask: "Can I find the answer in docs/code?"
+* Third ask: "Ask the team"
+* Last resort: "Ask Deneb"
+
+{note:title=We learned}Devs defaulted to "ask Deneb" → CTO became bottleneck, devs stopped growing.{note}
+
+{panel}
+
+----
+
+h1. Part 2: Sprint Structure (Monthly Cadence)
+
+h3. Why Monthly Sprints
+
+|| Reason || Explanation ||
+| *Part-time reality* | Weekly sprints impossible with fragmented availability |
+| *Reduced overhead* | Fewer ceremonies = more development time |
+| *Better predictability* | Longer planning horizon for business |
+| *Buffer for life* | Day jobs, vacations, unexpected issues have room |
+
+h3. Sprint Flow
+
+{info:title=Use Draw.io to create this flowchart}
+*Week 0 (Last Week of Previous Sprint)*
+→ Business Alignment Meeting (Azara + Robuxio)
+→ Backlog Refinement (mostly async)
+→ Jira Preparation
+
+*Week 1 (Sprint Start)*
+→ Sprint Planning (Dev Team Only)
+→ Development begins
+
+*Weeks 2-3*
+→ Daily async updates
+→ Standups (flexible, not rigid)
+→ Development continues
+
+*Week 4*
+→ Development wraps up
+→ Sprint Review (with business)
+→ Retrospective (dev team)
+{info}
+
+----
+
+h1. Part 3: Ceremonies (Minimal, High Impact)
+
+h3. 3.1 Business Alignment Meeting (Pre-Planning)
+
+|| Attribute || Value ||
+| *Purpose* | Align on priorities before technical planning |
+| *Participants* | Azara + Pavel/Dries |
+| *Frequency* | Once per month, before sprint planning |
+| *Duration* | ~1 hour |
+| *Language* | English |
+
+*Outcome:*
+* Prioritized list of business deliverables
+* Clear understanding of business goals and urgency
+* *NO technical discussion* – that happens in planning
+
+----
+
+h3. 3.2 Sprint Planning (Development Only)
+
+|| Attribute || Value ||
+| *Purpose* | Define what can realistically be delivered |
+| *Participants* | Dev team only (Deneb, Leo, Jamolpe, Erro, Azara) |
+| *Duration* | ~2 hours |
+| *Business attends* | NO – input already consolidated |
+
+*Agenda:*
+# Presentation of prioritized deliverables (by Azara)
+# Review of epics and tasks in Jira
+# *Start Gate Check* for each candidate ticket
+# Estimation and capacity check
+# Commitment to sprint scope
+# Define Sprint Goal
+
+*Output:* Sprint backlog with ONLY tickets that pass Start Gate.
+
+----
+
+h3. 3.3 Daily Updates (Async-First)
+
+|| Attribute || Value ||
+| *Purpose* | Early detection of blockers |
+| *Participants* | All developers |
+| *Frequency* | Once per workday |
+| *Format* | Jira comment or Discord |
+
+*Daily Update Format:*
+{code}
+Next step: [what I'm working on]
+Blocker: [none / describe]
+ETA Confidence: [High / Medium / Low]
+{code}
+
+*Sync Standups:* Only when needed (not forced daily). If everyone updates async, skip the meeting.
+
+----
+
+h3. 3.4 Backlog Refinement (Mostly Async)
+
+|| Attribute || Value ||
+| *Purpose* | Prepare upcoming work for efficient planning |
+| *Who Does It* | Azara (with dev input when needed) |
+| *Frequency* | 3-5 days before planning |
+| *Duration* | ~1.5 hours (mostly async) |
+
+*PM Refinement Checklist:*
+* Each delivery maps to an Epic
+* Tasks exist in Jira and are linked to Epic
+* Tickets have clear titles and basic context
+* Check for duplicates
+* Assign domain labels
+* Flag tickets needing dev clarification
+
+----
+
+h3. 3.5 Sprint Review (With Business)
+
+|| Attribute || Value ||
+| *Purpose* | Demonstrate completed work, collect feedback |
+| *Participants* | Dev team + Pavel + Dries |
+| *Duration* | 1-1.5 hours |
+| *Rule* | If it can't be demoed, it's not "Done" |
+
+*Format:*
+* Live demos of completed work
+* Review: delivered vs planned
+* Business validation and feedback
+* Identify what needs follow-up
+
+----
+
+h3. 3.6 Retrospective (Dev Team Only)
+
+|| Attribute || Value ||
+| *Purpose* | Improve team processes |
+| *Participants* | Dev team only |
+| *Duration* | 1 hour max |
+| *Output* | 1-2 concrete improvement actions |
+
+*Questions:*
+# What caused blockers this sprint?
+# What caused rework?
+# What rule should we change?
+
+{warning:title=We will NOT skip retros}
+Past failure: "1.5 months without retro" meant problems compounded.
+{warning}
+
+----
+
+h1. Part 4: The Jira Workflow
+
+h3. Status Flow Diagram
+
+{info:title=Create this diagram in Draw.io or Gliffy}
+*IDEA* → (PM Triage within 48h) → *DRAFT* → (Ready to formalize?) → *READY FOR CLARIFICATION* ⚠️ STOP ZONE → (All fields + approvals?) → *READY* → (Dev pulls) → *IN PROGRESS* ↔ *BLOCKED* → (Code complete?) → *IN REVIEW* → (AC met?) → *DONE*
+{info}
+
+----
+
+h3. Status Definitions
+
+h4. IDEA
+* *Purpose:* Capture raw requests from any source
+* *Who Creates:* Anyone
+* *PM Action:* Triage within 48h (tag source, classify type, check duplicates)
+* *Exit:* Accept → Draft, Reject → Closed
+
+h4. DRAFT
+* *Purpose:* Shape the problem (NOT solve it)
+* *Contributors:* Dries (client), Olda (trading), Deneb (architecture)
+* *NOT Allowed:* Development work
+* *Exit:* Ready to formalize → Ready for Clarification
+
+h4. READY FOR CLARIFICATION ⚠️
+
+{warning:title=STOP ZONE – This is where the "6 weeks → 3 days" failure happened}
+PM identifies what's missing, assigns who must clarify.
+*Exit:* ALL mandatory fields complete AND ALL approvers explicitly approved → Ready
+{warning}
+
+h4. READY (Start Gate Passed)
+* *Purpose:* Ticket is STARTABLE
+* *Requirements:* All 8 Start Gate items checked off
+* *Exit:* Dev pulls ticket → In Progress
+
+h4. IN PROGRESS
+* *Purpose:* Active development
+* *Rules:* WIP = 1 per dev
+* *Before Starting:* Dev posts plan + assumptions
+* *Exit:* Code complete → In Review
+
+h4. BLOCKED
+* *Triggered By:* No progress in 24h, missing decision, dependency unresolved
+* *Required:* What's blocking, who must unblock, what decision needed
+* *PM Action:* Act immediately (same day)
+
+h4. IN REVIEW
+* *Purpose:* Validate against acceptance criteria
+* *Reviewers:* Trading → Olda, Technical → Deneb, Client → Dries
+* *Exit:* All criteria verified → Done
+
+h4. DONE
+* *Criteria:* ALL acceptance criteria met
+* *NOT "almost done"* – it works or it doesn't
+
+----
+
+h1. Part 5: Approval Matrix
+
+|| Ticket Type || Required Approvers || Must Both Approve? ||
+| *Core Trading* (engine, signals, risk) | Deneb + Olda | (/) Yes |
+| *Trading-Related* (TWR, NAV, fees, factsheets) | Deneb + Olda | (/) Yes |
+| *Client/Support/UX* (dashboards, support tools) | Deneb + Dries | (/) Yes |
+| *Pure Infra* (cloud, deployment) | Deneb only | N/A |
+| *Strategic/High-Risk* | + Pavel | All listed |
+
+h3. Approval Rules
+
+# *Silence ≠ Approval* – Must see "Approved" in Jira
+# Approval happens *BEFORE* status changes to "Ready"
+# For trading tickets, *BOTH Deneb AND Olda must approve*
+# Approvals are visible in ticket history (audit trail)
+
+----
+
+h1. Part 6: Business → Development Communication
+
+h3. Dedicated Discord Channel
+
+*Rules:*
+* Only business stakeholders submit requests
+* No technical discussions in this channel
+* PM monitors and converts to Jira tickets
+
+*Request Format:*
+{code}
+Title: [Short descriptive title]
+Business Goal: [What we're trying to achieve]
+Description: [Details]
+Urgency: [High / Medium / Low]
+{code}
+
+h3. No Request Enters Sprint Without:
+# Being converted to Jira ticket
+# Going through refinement
+# Passing Start Gate
+# Being included in sprint planning
+
+----
+
+h1. Part 7: Definition of Ready (DoR) – Start Gate Checklist
+
+A ticket is ready *ONLY IF* all boxes are checked:
+
+* (/) Linked to an Epic
+* (/) *Outcome* defined ("When done, we can ___")
+* (/) *In-scope* written (2-5 bullets)
+* (/) *Out-of-scope* written (explicit exclusions)
+* (/) *Acceptance criteria* (3-7 testable conditions)
+* (/) *Dependencies* listed
+* (/) *Example/mock* provided
+* (/) Correct *approvers* assigned
+* (/) All approvers have *explicitly approved* in Jira
+* (/) *Priority* defined (P0/P1/P2)
+* (/) *Owner* assigned (single dev)
+
+{warning:title=Missing ANY item = ticket cannot move to "Ready"}{warning}
+
+----
+
+h1. Part 8: Definition of Done (DoD)
+
+A ticket is Done *ONLY IF*:
+
+* (/) All acceptance criteria are met (verified, not assumed)
+* (/) Code is merged to develop branch (if applicable)
+* (/) Tested (unit tests, manual testing as appropriate)
+* (/) Deployed (if applicable)
+* (/) Functionally validated by appropriate reviewer
+* (/) Can be demoed (or has logs/tests for pure infra)
+
+{warning:title="Almost done" is NOT done.}{warning}
+
+----
+
+h1. Part 9: Escalation Protocol
+
+h3. When to Escalate
+
+|| Situation || Escalate To || Timeline ||
+| Technical decision needed | Deneb | Same day |
+| Trading logic unclear | Olda | Same day |
+| Client impact unclear | Dries | Same day |
+| Strategic/priority conflict | Pavel | Within 24h |
+| Dev blocked >24h | PM (Azara) → appropriate owner | Immediately |
+
+h3. How to Escalate
+
+# Move ticket to *Blocked* status
+# Add comment: what's needed, who's needed, deadline
+# Tag person in Discord with \[BLOCKER\] prefix
+# Follow up same day
+
+h3. Urgency Tags
+
+|| Tag || Meaning || Expected Response ||
+| \[BLOCKER\] | Work stopped | Immediate |
+| \[NEEDS-DECISION\] | Waiting on choice | Same day |
+| \[ASYNC\] | Not urgent | Within 24h |
+
+----
+
+h1. Part 10: Handling Unclear Work (Spikes)
+
+{info:title=When a ticket is unclear, DO NOT "start anyway".}{info}
+
+h3. Spike Definition
+
+|| Attribute || Value ||
+| *Purpose* | Time-boxed investigation |
+| *Duration* | 2-6 hours max |
+| *Output Required* | Written findings, proposed approach, updated AC |
+| *Result* | Original ticket becomes startable |
+
+h3. Spike Template
+
+{code}
+## Spike: [Title]
+
+**Question to Answer:**
+[What we need to figure out]
+
+**Timebox:** [2-6 hours]
+
+**Context:**
+[Why is this unclear? What do we know?]
+
+**Required Output:**
+- Written findings summary
+- Proposed approach
+- Updated acceptance criteria for parent ticket
+
+**Parent Ticket:** [Link]
+{code}
+
+----
+
+h1. Part 11: Priority Conflict Resolution
+
+|| Conflict || Who Wins ||
+| CEO vs Anyone | CEO (business decision) |
+| CTO vs PM | CTO on technical, PM on timing |
+| Quant vs COO | Each owns their domain |
+| Multiple P0s | Escalate to Pavel |
+
+*All priority decisions documented in Jira. No verbal overrides.*
+
+----
+
+h1. Part 12: PM-Light Effort Estimation
+
+Azara's monthly PM effort (separate from development):
+
+|| Activity || Frequency || Duration || Monthly Hours ||
+| Business alignment meeting | 1/month | 1h | 1h |
+| Backlog refinement | 1/month | 1.5h | 1.5h |
+| Sprint planning facilitation | 1/month | 2h | 2h |
+| Sprint review | 1/month | 1.5h | 1.5h |
+| Retrospective | 1/month | 1h | 1h |
+| Jira maintenance & async coordination | Ongoing | ~20 min/day | ~7h |
+| Start Gate reviews (ad-hoc) | As needed | ~2h total | 2h |
+| *Total* | | | *~16 hours/month* |
+
+----
+
+h1. Part 13: What We Track (Metrics)
+
+h3. Weekly Metrics (PM Responsibility)
+
+|| Metric || What It Measures || Goal ||
+| *Cycle Time* | Ready → Done | Trend down |
+| *Time in Blocked* | Where work gets stuck | Minimize |
+| *Time in Clarification* | How long clarity takes | Minimize |
+| *Rework Rate* | Tickets moved back after start | < 10% |
+| *Start Gate Pass Rate* | Tickets ready at planning | > 80% |
+
+h3. What We Do NOT Track
+
+* (x) Hours worked
+* (x) Personal velocity
+* (x) "Busyness" indicators
+* (x) Lines of code
+
+{info:title=Measure flow, not fear.}{info}
+
+----
+
+h1. Part 14: Working Agreements
+
+h3. For Developers
+
+# *Post daily updates* (Jira or Discord) – even if "no change"
+# *Refuse unclear work* – ask for Spike if needed
+# *Escalate same day* – don't absorb ambiguity
+# *One ticket at a time* – finish before pulling next
+# *Ask team before asking CTO* – build collective knowledge
+
+h3. For Business (Pavel, Dries)
+
+# *Submit requests through proper channels* – Discord format or Jira
+# *Provide written requirements* – no voice notes as primary source
+# *Approve explicitly* – silence blocks work
+# *Attend Sprint Review* – validate delivered work
+# *Respect sprint boundaries* – changes are expensive
+
+h3. For PM (Azara)
+
+# *Triage within 48h* – nothing lingers in Idea
+# *Enforce Start Gate* – no exceptions for "just this once"
+# *Act on blockers same day* – visibility is your job
+# *Protect the sprint* – push back on mid-sprint scope changes
+# *When wearing dev hat* – your tickets follow same rules
+
+h3. For CTO (Deneb)
+
+# *Approve tickets explicitly* – silence is not approval
+# *Approve or reject quickly* – don't be the bottleneck
+# *Step back from daily decisions* – trust the process and team
+# *Review Azara's tickets* – conflict of interest coverage
+# *Focus on architecture* – that's your unique value
+
+----
+
+h1. Part 15: Conflict of Interest Protocol
+
+Since Azara is both PM and Developer:
+
+|| Situation || Who Handles ||
+| Azara's tickets need Start Gate review | Deneb reviews |
+| Azara's work needs approval | Normal approvers (Deneb/Olda/Dries) |
+| PM decision affects Azara's workload | Deneb has veto |
+| Sprint capacity planning | Azara declares his dev hours, team validates |
+
+*Transparency Rule:* Any potential conflict is flagged in Jira comments.
+
+----
+
+h1. Part 16: Ticket Templates
+
+h3. Story Template
+
+{code}
+## Problem Statement
+[What problem does this solve? 1-2 sentences]
+
+## Outcome
+When this is done, we can: [specific outcome]
+
+## In Scope
+- [ ] [Specific deliverable 1]
+- [ ] [Specific deliverable 2]
+- [ ] [Specific deliverable 3]
+
+## Out of Scope
+- [What we explicitly will NOT do]
+
+## Acceptance Criteria
+- [ ] [Testable criterion 1]
+- [ ] [Testable criterion 2]
+- [ ] [Testable criterion 3]
+
+## Dependencies
+- [System/person/data needed]
+
+## Example/Mock
+[Screenshot, example data, expected output]
+
+---
+**Type:** [Core Trading / Trading-Related / Client-Support-UX]
+**Owner:** [Single dev]
+**Approvers:** [Based on type]
+**Priority:** [P0 / P1 / P2]
+{code}
+
+h3. Bug Template
+
+{code}
+## Bug Description
+[What is broken?]
+
+## Steps to Reproduce
+1. [Step 1]
+2. [Step 2]
+3. [Step 3]
+
+## Expected Behavior
+[What should happen]
+
+## Actual Behavior
+[What actually happens]
+
+## Impact
+[Trading / Ops / UX / Compliance]
+
+## Screenshots/Logs
+[Attach evidence]
+
+---
+**Severity:** [Critical / Major / Minor / Trivial]
+**Owner:** [Single dev]
+**Priority:** [P0 / P1 / P2]
+{code}
+
+----
+
+h1. Part 17: Quick Reference Card
+
+h3. The 10 Rules (Summary)
+
+# *Jira is truth* – if not in Jira, doesn't exist
+# *Silence ≠ Approval* – explicit approval required
+# *Start Gate or no start* – all 8 items checked
+# *WIP = 1* – one ticket per dev
+# *Scope change = go back* – no silent drift
+# *Escalate same day* – uncertainty isn't absorbed
+# *24h = Blocked* – make stuck work visible
+# *Trading = dual approval* – Deneb + Olda
+# *Devs can refuse* – unclear work doesn't start
+# *CTO ≠ safety net* – team solves, CTO guides
+
+h3. Approval Quick Reference
+
+|| Type || Approvers ||
+| Core Trading | Deneb + Olda |
+| Trading-Related | Deneb + Olda |
+| Client/UX | Deneb + Dries |
+| Infra | Deneb |
+
+h3. When in Doubt
+
+# Unclear → Create Spike (2-6h max)
+# Blocked → Move to Blocked, escalate same day
+# Scope changed → Back to Ready for Clarification
+# No response → Ticket is blocked, tag PM
+
+----
+
+h1. Part 18: Success Criteria
+
+h3. You Know This Is Working When:
+
+|| Signal || Meaning ||
+| No ticket starts without Start Gate | Clarity before execution (/) |
+| Blocked tickets caught within 24h | Early detection works (/) |
+| Rework rate < 10% | Scope is clear upfront (/) |
+| Cycle time trending down | Flow is improving (/) |
+| No "6 weeks → 3 days" surprises | System prevents waste (/) |
+| Devs solving without CTO | Team is growing (/) |
+| Retros happen every sprint | Continuous improvement (/) |
+
+h3. Warning Signs It's Failing:
+
+|| Signal || Action ||
+| "Deneb will know" becomes common | Retro: reinforce Rule 10 |
+| Tickets starting without approval | PM blocks and resets |
+| Same problems recurring | Retro: find root cause |
+| Standups/retros skipped | PM enforces, escalates if needed |
+| Deadlines always slip | Review estimation process |
+
+----
+
+h1. Part 19: Document History
+
+|| Version || Date || Author || Changes ||
+| 1.0 | Dec 2024 | Hakan (PM) | Initial framework |
+| 2.0 | Jan 2026 | Azara (Interim PM) | Merged pragmatic Scrum approach, acknowledged part-time reality, added lessons learned, monthly cadence |
+
+----
+
+h2. Signatures
+
+By working with this team, you agree to follow these rules:
+
+* ( ) Pavel (CEO)
+* ( ) Dries (COO)
+* ( ) Deneb (CTO)
+* ( ) Olda (Quant)
+* ( ) Javier Azara (Interim PM / Dev)
+* ( ) Leonardo Rodríguez Martínez (Dev)
+* ( ) Jamolpe (Dev)
+* ( ) Javier Erro Garcia (Dev)
+
+----
+
+{quote}
+_"A good system makes the right thing easy and the wrong thing hard."_
+
+_This Bible exists because we learned from our mistakes. Follow it._
+{quote}
